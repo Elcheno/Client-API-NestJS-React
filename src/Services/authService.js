@@ -59,10 +59,28 @@ const checkSession = () => {
     })
 }
 
+const register = (name, email, password) => {
+    return new Promise((resolve, reject) => {
+        try{
+            axios.post('http://localhost:8200/auth/register', { name, email, password })
+            .then(res => {
+                if (!res || !res.data) resolve(null);
+                setUser(res.data)
+                window.localStorage.setItem('sessionData', JSON.stringify(res.data))
+                resolve(res.data)
+            })
+            .catch(err => reject(err))
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
 export default { 
     setUser,
     getUser, 
     login, 
     logout, 
     checkSession,
+    register,
 }
