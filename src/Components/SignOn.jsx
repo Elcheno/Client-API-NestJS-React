@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import authService from '../Services/authService'
 import { useNavigate } from 'react-router-dom'
+import uiService from '../Services/uiService'
 
 const SignOn = ({ setSessionData }) => {
 
@@ -13,12 +14,20 @@ const SignOn = ({ setSessionData }) => {
 
     const register = (event) => {
         event.preventDefault()
+        uiService.showLoading()
         authService.register(name, email, password)
         .then(user => {
-            setSessionData(user)
-            navigate('/')
+            uiService.dismissLoading()
+            if (user) {
+                setSessionData(user)
+                navigate('/')
+                uiService.toast({ icon: 'success', msg: `Welcome${' ' + user?.name}!` })
+            }
         })
-        .catch((err) => console.error(err))
+        .catch((err) => {
+            uiService.dismissLoading()
+            console.error(err)
+        })
     }
 
     return (

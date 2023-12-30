@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import authService from './Services/authService'
+import uiService from './Services/uiService'
 import { useEffect, useState } from 'react'
 import './App.css'
 import Home from './Components/Home'
@@ -13,7 +14,12 @@ function App() {
 
   useEffect(() => {
     authService.checkSession()
-      .then(user => setSessionData(user))
+      .then(user => {
+        if (user) {
+          setSessionData(user)
+          uiService.toast({ icon: 'success', msg: `Welcome back${' ' + user?.name}!` })
+        }
+      })
       .catch((err) => console.error(err))
   }, [])
 
