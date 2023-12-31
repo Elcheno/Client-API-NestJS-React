@@ -35,7 +35,22 @@ const saveNote = (note) => {
     })
 }
 
+const deleteNote = (noteId) => {
+    return new Promise((resolve, reject) => {
+        const user = authService.getUser()
+        const token = user ? user.token : null
+        if (!token) return resolve(null)
+        axios.delete(`http://localhost:8200/note/${noteId}`, { headers: {"Authorization" : `Bearer ${token}`} })
+        .then(res => {
+            if (!res || !res.data) resolve(null);
+            resolve(res.data)
+        })
+        .catch(err => reject(err))
+    })
+}
+
 export default {
     getNotes,
     saveNote,
+    deleteNote,
 }

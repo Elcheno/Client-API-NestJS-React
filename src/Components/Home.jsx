@@ -17,8 +17,32 @@ import {
 } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import AddNote from "./addNote"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useEffect } from "react"
 
 const columns = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "title",
     header: "Title",
@@ -58,13 +82,21 @@ const columns = [
 ]
 
 
-export function DataTable({ columns, data, loadNotes }) {
+export function DataTable({ columns, data, loadNotes, toggleRowSelected }) {
+  useEffect(() => {
+    exportRowSelected()
+  })
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
 
   })
+
+  const exportRowSelected = () => {
+    toggleRowSelected(table)
+  }
 
   const loadMoreNotes = () => {
     loadNotes()
@@ -116,6 +148,10 @@ export function DataTable({ columns, data, loadNotes }) {
           </TableBody>
         </Table>
       </div>
+      <div className="flex-1 text-sm text-muted-foreground">
+        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+        {table.getFilteredRowModel().rows.length} row(s) selected.
+      </div>
       <div className="mt-4 flex justify-center">
         <Button onClick={loadMoreNotes}>Load More</Button>
       </div>
@@ -125,23 +161,41 @@ export function DataTable({ columns, data, loadNotes }) {
 
 
 export default function Home({ notes, setNotes, loadNotes }) {
+  let rowSelected = []
 
+  const toggleRowSelected = (table) => {
+    // console.log(table.getFilteredSelectedRowModel().rows)
+    rowSelected = table.getFilteredSelectedRowModel().rows
+  }
 
   const addNote = (note) => {
     noteService.saveNote(note)
     .then((newNote) => {
       setNotes([newNote, ...notes])
     })
-    // setNotes(notes.unshift(note))
+    .catch((err) => console.log(err))
     // setNotes([note, ...notes])
   }
 
+  const removeNote = () => {
+    if (rowSelected.length > 0) {
+      let noteId = rowSelected[0].original.id
+      noteService.deleteNote(noteId)
+      .then(() => {
+        setNotes(notes.filter((note) => note.id !== noteId))
+      })
+      .catch((err) => console.log(err))
+      // setNotes(notes.filter((note) => note.id !== noteId))
+    }
+  }
+    
   return (
     <div className="mx-auto py-10 w-full pr-8 pl-8 overflow-x-scroll mb-10">
-      <div>
+      <div className="flex justify-start gap-x-4 mb-3">
         <AddNote addNote={addNote} />
+        <Button onClick={removeNote}>Remove Note ➖</Button>
       </div>
-      <DataTable columns={columns} data={notes} loadNotes={loadNotes} />
+      <DataTable columns={columns} data={notes} loadNotes={loadNotes} toggleRowSelected={toggleRowSelected}/>
     </div>
   )
 }
