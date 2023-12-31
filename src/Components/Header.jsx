@@ -3,13 +3,15 @@ import { Link } from "react-router-dom"
 import authService from '../Services/authService'
 import uiService from '../Services/uiService'
 
-const Header = ({ sessionData, setSessionData }) => {
+const Header = ({ sessionData, setSessionData, setNotes, setPage }) => {
 
     const logout = () => {
         authService.logout()
             .then(() => {
                 setSessionData(null)
-                uiService.toast({ icon: 'success', msg: 'You have been signed out' })
+                setNotes([])
+                setPage(0)
+                uiService.toast({ icon: 'success', msg: 'You have been signed out' })      
             })
             .catch((err) => console.error(err))
     }

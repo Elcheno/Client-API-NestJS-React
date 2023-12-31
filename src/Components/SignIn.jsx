@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import authService from "../Services/authService";
 import uiService from "../Services/uiService";
 
-const SignIn = ({ setSessionData }) => {
+const SignIn = ({ setSessionData, loadNotes }) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -21,6 +21,7 @@ const SignIn = ({ setSessionData }) => {
                     setSessionData(user)
                     navigate('/')
                     uiService.toast({ icon: 'success', msg: `Welcome back${' ' + user?.name}!` })
+                    loadNotes()
                 }
             })
             .catch((err) => {
