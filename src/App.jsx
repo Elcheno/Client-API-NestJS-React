@@ -28,22 +28,36 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadNotes = () => {
+  const loadNotes = (filter = null) => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        noteService.getNotes(page)
-          .then((res) => {
-            if (res) {
-              setNotes(notes.concat(res))
-              setPage(page + 1)
-            }
-            resolve()
-          })
-          .catch((err) => {
-            console.log(err)
-            reject(err)
-          })
-      }, 500)
+      if (filter) {
+        noteService.getNotesFiltered(filter)
+        .then((notes) => {
+          setNotes(notes)
+          setPage(0)
+        })
+        .catch((err) => {
+          console.log(err)
+          reject(err)
+        })
+
+      } else {
+        setTimeout(() => {
+          noteService.getNotes(page)
+            .then((res) => {
+              if (res) {
+                filter === '' ? setNotes(res) : setNotes(notes.concat(res))
+                setPage(page + 1)
+              }
+              resolve()
+            })
+            .catch((err) => {
+              console.log(err)
+              reject(err)
+            })
+        }, 500)
+      }
+
     })
   }
 
