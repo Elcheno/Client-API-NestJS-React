@@ -38,10 +38,6 @@ const Header = ({ sessionData, setSessionData, setNotes, setPage }) => {
                     sessionData
                         ? (
                             <div className='flex items-center gap-4'>
-                                {/* <div className="grid w-full max-w-sm items-center gap-1.5">
-                                    <Input id="picture" type="file" onChange={(e) => setImg(e.target.files[0])} />
-                                </div>
-                                <Button onClick={saveImg} >SAVE IMG</Button> */}
                                 <DropdownProfile user={sessionData} logOut={logout} />
                             </div>
                         )

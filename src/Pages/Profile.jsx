@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import profileService from "../Services/profileService"
+import uiService from "../Services/uiService"
 
 const Profile = ({ sessionData }) => {
     useEffect(() => {
@@ -55,8 +56,12 @@ const Profile = ({ sessionData }) => {
                 ...res,
                 token: token
             }))
+            uiService.toast({ type: 'success', msg: 'Profile updated successfully' })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.error(err)
+            uiService.toast({ type: 'error', msg: 'Failed to update profile' })
+        })
     }
 
     const resetAll = () => {
