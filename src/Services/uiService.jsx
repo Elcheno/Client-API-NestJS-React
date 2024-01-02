@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { toast as createToast } from "sonner"
 
 let loading = null;
 
@@ -9,22 +10,17 @@ const loadingOption = Swal.mixin({
     }
 });
 
-const toast = ({ icon = 'success', msg }) => {
-    const toast = Swal.mixin({
-        toast: true,
-        position: "bottom-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-    toast.fire({
-        icon,
-        title: msg
-    })
+const toast = ({ type, msg }) => {
+    if (type === 'success') {
+        createToast.success(msg)
+
+    } else if (type === 'error') {
+        createToast.error(msg)
+
+    } else {
+        createToast(msg)
+
+    }  
 }
 
 const showLoading = () => {

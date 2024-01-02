@@ -25,7 +25,7 @@ const FormNote = ({ note = null, submit }) => {
                 id: note?.id,
                 title,
                 description,
-                date: new Date(Date.now()).toISOString(),
+                date: note ? note.date : new Date(Date.now()).toISOString(),
             }
             submit(newNote);
             dialogClose();

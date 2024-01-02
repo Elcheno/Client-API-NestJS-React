@@ -4,11 +4,13 @@ import uiService from './Services/uiService'
 import noteService from './Services/noteService'
 import { useEffect, useState } from 'react'
 import './App.css'
-import Home from './Components/Home'
-import About from './Components/About'
+import Home from './Pages/Home'
+import About from './Pages/About'
+import SignIn from './Pages/SignIn'
+import SignOn from './Pages/SignOn'
 import Header from './Components/Header'
-import SignIn from './Components/SignIn'
-import SignOn from './Components/SignOn'
+import { Toaster } from 'sonner'
+
 
 function App() {
   const [sessionData, setSessionData] = useState(null)
@@ -70,6 +72,7 @@ function App() {
         <Route path="/login" element={<SignIn setSessionData={setSessionData} loadNotes={loadNotes} />} />
         <Route path='/register' element={<SignOn setSessionData={setSessionData} />} />
       </Routes>
+      <Toaster closeButton expand={false} position="bottom-right" />
     </main>
   )
 }
