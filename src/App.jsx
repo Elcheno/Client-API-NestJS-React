@@ -8,6 +8,7 @@ import Home from './Pages/Home'
 import About from './Pages/About'
 import SignIn from './Pages/SignIn'
 import SignOn from './Pages/SignOn'
+import Profile from './Pages/Profile'
 import Header from './Components/Header'
 import { Toaster } from 'sonner'
 
@@ -71,6 +72,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<SignIn setSessionData={setSessionData} loadNotes={loadNotes} />} />
         <Route path='/register' element={<SignOn setSessionData={setSessionData} />} />
+        <Route path='/profile' element={<Profile sessionData={sessionData}/> } />
       </Routes>
       <Toaster closeButton expand={false} position="bottom-right" />
     </main>

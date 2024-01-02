@@ -12,20 +12,13 @@ const Header = ({ sessionData, setSessionData, setNotes, setPage }) => {
                 setSessionData(null)
                 setNotes([])
                 setPage(0)
-                uiService.toast({ icon: 'success', msg: 'You have been signed out' })
+                uiService.toast({ type: 'success', msg: 'You have been signed out' })
             })
-            .catch((err) => console.error(err))
+            .catch((err) => {
+                console.error(err)
+                uiService.toast({ type: 'error', msg: `Failed to sign out!` })
+            })
     }
-
-    // const saveImg = async () => {
-        // const FR = new FileReader()
-        // FR.addEventListener("load", async (evt) => {
-        //     setPicture(evt.target.result)
-        //     console.log(evt.target.result)
-        // })
-        // FR.readAsDataURL(img)
-    //     console.log(sessionData.picture)
-    // }
 
     return (
         <div className="navbar bg-base-100">
@@ -35,6 +28,8 @@ const Header = ({ sessionData, setSessionData, setNotes, setPage }) => {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li><Link to="/">Home</Link></li>
+                </ul>
+                <ul className="menu menu-horizontal px-1">
                     <li><Link to="/about">About</Link></li>
                 </ul>
             </div>

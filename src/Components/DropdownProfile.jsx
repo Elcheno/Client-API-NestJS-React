@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Github, User, Settings, GitFork } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Link } from "react-router-dom"
 
 
 const DropdownProfile = ({ user, logOut }) => {
@@ -28,10 +29,12 @@ const DropdownProfile = ({ user, logOut }) => {
                 <DropdownMenuSeparator />
 
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="cursor-pointer">
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
-                    </DropdownMenuItem>
+                    <Link to="/profile">
+                        <DropdownMenuItem className="cursor-pointer">
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Profile</span>
+                        </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem className="cursor-pointer" disabled>
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Settings</span>

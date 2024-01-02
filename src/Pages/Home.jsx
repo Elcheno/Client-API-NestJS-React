@@ -215,7 +215,7 @@ export default function Home({ notes, setNotes, loadNotes }) {
   }
 
   return (
-    <div className="mx-auto py-10 w-full pr-8 pl-8 overflow-x-scroll mb-10">
+    <div className="mx-auto py-10 w-full pr-8 pl-8 mb-10">
       <div className="flex justify-start gap-x-4 mb-3">
         <Input
           value={filterNoteString}

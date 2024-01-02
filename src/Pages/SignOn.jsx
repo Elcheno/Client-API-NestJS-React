@@ -21,12 +21,13 @@ const SignOn = ({ setSessionData }) => {
             if (user) {
                 setSessionData(user)
                 navigate('/')
-                uiService.toast({ icon: 'success', msg: `Welcome${' ' + user?.name}!` })
+                uiService.toast({ type: 'success', msg: `Welcome${' ' + user?.name}!` })
             }
         })
         .catch((err) => {
             uiService.dismissLoading()
             console.error(err)
+            uiService.toast({ type: 'error', msg: `Failed to register!` })
         })
     }
 
