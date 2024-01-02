@@ -25,18 +25,21 @@ import {
 import { Button } from "@/components/ui/button"
 import AddNote from "./AddNote"
 import { Checkbox } from "@/components/ui/checkbox"
-import { MoreHorizontal, Trash2 } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 import {
   Dialog,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import UpdateNote from "./UpdateNote"
 import { Input } from "@/components/ui/input"
+import RemoveNote from "./removeNote"
 
 export function DataTable({ columns, data, loadNotes, toggleRowSelected }) {
   useEffect(() => {
     toggleRowSelected(table)
   })
+
+  const [loadingLoadNotes, setLoadingLoadNotes] = useState(false)
 
   const table = useReactTable({
     data,
@@ -45,7 +48,10 @@ export function DataTable({ columns, data, loadNotes, toggleRowSelected }) {
   })
 
   const loadMoreNotes = () => {
-    loadNotes()
+    setLoadingLoadNotes(true)
+    loadNotes().then(() => {
+      setLoadingLoadNotes(false)
+    })
   }
 
   return (
@@ -98,7 +104,10 @@ export function DataTable({ columns, data, loadNotes, toggleRowSelected }) {
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
-      <div className="mt-4 flex justify-center">
+      <div className="mt-4 flex flex-col items-center justify-center">
+        <div className="h-10 w-10 mb-2">
+          {loadingLoadNotes && <span className="loading loading-spinner loading-lg"></span> }
+        </div>
         <Button onClick={loadMoreNotes}>Load More</Button>
       </div>
     </div>
@@ -107,7 +116,7 @@ export function DataTable({ columns, data, loadNotes, toggleRowSelected }) {
 
 export default function Home({ notes, setNotes, loadNotes }) {
   const [filterNoteString, setFilterNoteString] = useState('')
-  let rowSelected = []
+  const [rowSelected, setRowSelected] = useState([])
 
   const columns = [
     {
@@ -205,7 +214,7 @@ export default function Home({ notes, setNotes, loadNotes }) {
   ]
 
   const toggleRowSelected = (table) => {
-    rowSelected = table.getFilteredSelectedRowModel().rows
+    setRowSelected(table.getFilteredSelectedRowModel().rows)
   }
 
   const addNote = (note) => {
@@ -301,7 +310,7 @@ export default function Home({ notes, setNotes, loadNotes }) {
           className="max-w-sm"
         />
         <AddNote addNote={addNote} />
-        <Button onClick={removeNote}>Remove Note <Trash2 className="ml-2"/></Button>
+        <RemoveNote onDelete={removeNote} rowSelected={rowSelected} />
       </div>
       <DataTable columns={columns} data={notes} loadNotes={loadNotes} toggleRowSelected={toggleRowSelected} />
     </div>
