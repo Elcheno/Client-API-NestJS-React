@@ -10,16 +10,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import AddNote from "../Components/AddNote"
+import AddNote from "../Components/Notes/AddNote"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MoreHorizontal, FileEdit, Trash2 } from "lucide-react"
 import {
   Dialog,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import UpdateNote from "../Components/UpdateNote"
+import UpdateNote from "../Components/Notes/UpdateNote"
 import { Input } from "@/components/ui/input"
-import RemoveNote from "../Components/removeNote"
+import RemoveNote from "../Components/Notes/RemoveNote"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import DialogAlert from "../Components/DialogAlert"
 import DataTable from "../Components/DataTable"
@@ -215,7 +215,7 @@ export default function Home({ notes, setNotes, loadNotes }) {
   }
 
   return (
-    <div className="mx-auto py-10 w-full pr-8 pl-8 mb-10">
+    <main className="mx-auto py-10 w-full pr-8 pl-8 mb-10">
       <div className="flex justify-start gap-x-4 mb-3">
         <Input
           value={filterNoteString}
@@ -227,6 +227,6 @@ export default function Home({ notes, setNotes, loadNotes }) {
         <RemoveNote onDelete={removeNote} rowSelected={rowSelected} />
       </div>
       <DataTable columns={columns} data={notes} loadItems={loadNotes} toggleRowSelected={toggleRowSelected} />
-    </div>
+    </main>
   )
 }

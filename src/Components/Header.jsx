@@ -28,9 +28,8 @@ const Header = ({ sessionData, setSessionData, setNotes, setPage }) => {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li><Link to="/">Home</Link></li>
-                </ul>
-                <ul className="menu menu-horizontal px-1">
                     <li><Link to="/about">About</Link></li>
+                    { sessionData?.rol === 'admin' && <li><Link to="/users">Users</Link></li> }
                 </ul>
             </div>
             <div className="navbar-end">

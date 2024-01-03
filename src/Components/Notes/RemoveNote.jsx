@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import DialogAlert from "./DialogAlert"
+import DialogAlert from "../DialogAlert"
 import { Trash2 } from "lucide-react"
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"

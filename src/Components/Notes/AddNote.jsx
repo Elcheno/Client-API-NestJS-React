@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import FormNote from "./formNote"
+import FormNote from "./FormNote"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
