@@ -25,7 +25,7 @@ const DropdownProfile = ({ user, logOut }) => {
 
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
-                { user.name && <DropdownMenuLabel className="font-normal">{user.name}</DropdownMenuLabel> }
+                { user.username && <DropdownMenuLabel className="font-normal">{user.username}</DropdownMenuLabel> }
                 <DropdownMenuSeparator />
 
                 <DropdownMenuGroup>

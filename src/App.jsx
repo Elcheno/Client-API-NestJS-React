@@ -22,50 +22,44 @@ function App() {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
-    uiService.showLoading()
     authService.checkSession()
       .then(user => {
         if (user) {
+          uiService.showLoading()
           setSessionData(user)
-          console.log(user)
-          Promise.all([
+
+          Promise.allSettled([
             loadNotes(),
-            loadUsers()
+            user.rol === 'admin' ? loadUsers() : null
           ])
-          .then(() => uiService.dismissLoading())
-          .catch((err) => {
-            console.error(err)
-            uiService.dismissLoading()
-          })
-        } else {
-          uiService.dismissLoading()
+          .catch((err) => console.error(err))
+          .finally(() => uiService.dismissLoading())
+
         }
       })
-      .catch((err) => {
-        console.error(err)
-        uiService.dismissLoading()
-      })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      .catch((err) => console.error(err))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loadNotes = (filter = null) => {
     return new Promise((resolve, reject) => {
       if (filter) {
         noteService.getNotesFiltered(filter)
-        .then((notes) => {
-          setNotes(notes)
-          setNotesPage(0)
-        })
-        .catch((err) => {
-          console.log(err)
-          reject(err)
-        })
+          .then((notes) => {
+            setNotes(notes)
+            setNotesPage(0)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
 
       } else {
         setTimeout(() => {
           noteService.getNotes(notesPage)
             .then((res) => {
-              if (res) {
+              if (res && res.length > 0) {
                 filter === '' ? setNotes(res) : setNotes(notes.concat(res))
                 setNotesPage(notesPage + 1)
               }
@@ -83,20 +77,20 @@ function App() {
 
   const loadUsers = () => {
     return new Promise((resolve, reject) => {
-      if (sessionData?.rol !== 'admin') resolve()
-      userService.getUsers(usersPage)
-      .then((res) => {
-        console.log(res)
-        if (res) {
-          setUsers(users.concat(res))
-          setUsersPage(usersPage + 1)
-        }
-        resolve()
-      })
-      .catch((err) => {
-        console.log(err)
-        reject(err)
-      })
+      setTimeout(() => {
+        userService.getUsers(usersPage)
+          .then((res) => {
+            if (res && res.length > 0) {
+              setUsers(users.concat(res))
+              setUsersPage(usersPage + 1)
+            }
+            resolve()
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      }, 2000)
     })
   }
 
@@ -104,11 +98,11 @@ function App() {
     <main className='wrapper'>
       <Header sessionData={sessionData} setSessionData={setSessionData} setNotes={setNotes} setPage={setNotesPage} />
       <Routes>
-        <Route path="/" element={<Home notes={notes} loadNotes={loadNotes} setNotes={setNotes} /> } />
+        <Route path="/" element={<Home notes={notes} loadNotes={loadNotes} setNotes={setNotes} />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<SignIn setSessionData={setSessionData} loadNotes={loadNotes} />} />
         <Route path='/register' element={<SignOn setSessionData={setSessionData} />} />
-        <Route path='/profile' element={<Profile sessionData={sessionData}/> } />
+        <Route path='/profile' element={<Profile sessionData={sessionData} />} />
         <Route path='/users' element={<Users users={users} setUsers={setUsers} loadItems={loadUsers} sessionData={sessionData} />} />
       </Routes>
       <Toaster closeButton expand={false} position="bottom-right" />
