@@ -9,6 +9,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 
 const CardSettings = ({ title = '', inputPlaceholder = '', label = '', value, setValue }) => {
 
@@ -29,33 +31,36 @@ const CardSettings = ({ title = '', inputPlaceholder = '', label = '', value, se
         })
         FR.readAsDataURL(img)
     }
-    
+
     return (
         <Card className="w-9/12 h-min">
             <CardHeader>
-                <CardTitle>{ title }</CardTitle>
+                <CardTitle>{title}</CardTitle>
             </CardHeader>
             <CardContent>
                 <form>
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="name">{ label }</Label>
+                            <Label htmlFor="name">{label}</Label>
                             {
                                 title !== 'Picture'
-                                ? (<Input value={ value.actualValue ? value.actualValue : '' } onChange={ (e) => setValue({ actualValue: e.target.value, defaultValue: value.defaultValue }) } id="name" placeholder={ inputPlaceholder } />  )
-                                : (
-                                    <div className="flex flex-col justify-center items-center gap-y-4">
-                                        <img src={ value.actualValue ? value.actualValue : '' } alt="Your profile picture" height="200px" width="200px" className="rounded-full mt-4"/>
-                                        <Input id="picture" type="file" className="w-2/4" onChange={ (e) => onChangePicture(e.target.files[0]) }/>
-                                    </div>
-                                )                            
+                                    ? (<Input value={value.actualValue ? value.actualValue : ''} onChange={(e) => setValue({ actualValue: e.target.value, defaultValue: value.defaultValue })} id="name" placeholder={inputPlaceholder} />)
+                                    : (
+                                        <div className="flex flex-col justify-center items-center gap-y-4">
+                                            <Avatar className="h-48 w-48 mt-4">
+                                                <AvatarImage src={value.actualValue} />
+                                                <AvatarFallback>CN</AvatarFallback>
+                                            </Avatar>
+                                            <Input id="picture" type="file" className="w-2/4" onChange={(e) => onChangePicture(e.target.files[0])} />
+                                        </div>
+                                    )
                             }
                         </div>
                     </div>
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline" onClick={ resetValue }>Reset</Button>
+                <Button variant="outline" onClick={resetValue}>Reset</Button>
             </CardFooter>
         </Card>
     )
