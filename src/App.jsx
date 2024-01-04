@@ -103,7 +103,7 @@ function App() {
         <Route path="/login" element={<SignIn setSessionData={setSessionData} loadNotes={loadNotes} />} />
         <Route path='/register' element={<SignOn setSessionData={setSessionData} />} />
         <Route path='/profile' element={<Profile sessionData={sessionData} />} />
-        <Route path='/users' element={<Users users={users} setUsers={setUsers} loadItems={loadUsers} sessionData={sessionData} />} />
+        <Route path='/users' element={<Users users={users} setUsers={setUsers} loadItems={loadUsers} sessionData={sessionData} /> } />
       </Routes>
       <Toaster closeButton expand={false} position="bottom-right" />
     </main>
